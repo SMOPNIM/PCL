@@ -5,7 +5,7 @@ Public Class PageOtherTest
 
     Private IsLoad As Boolean
     Private Shared IsMemoryOptimizeRunning As Boolean = False
-    Private IsCaveEnabled As Boolean
+    Private IsCaveEnabled As Boolean = True
 
 #Region "页面初始化"
 
@@ -141,6 +141,10 @@ Public Class PageOtherTest
 
 #Region "今日人品"
 
+    Private Sub BtnJrrp_Click() Handles BtnJrrp.Click
+        Jrrp()
+    End Sub
+
     Public Shared Sub Jrrp()
         Dim Num As Integer = CInt(Math.Round(Math.Abs((StringExtensions.GetStableHashCode($"asdfgbn{DateTime.Now.DayOfYear}12#3$45{DateTime.Now.Year}IUY") / 3.0 + StringExtensions.GetStableHashCode($"QWERTY{Identify}0*8&6{DateTime.Now.Day}kjhg") / 3.0) / 527.0) Mod 1001.0))
         Dim Num2 As Integer = If(Num < 970, CInt(Math.Round(Num / 969.0 * 99.0)), 100)
@@ -178,6 +182,10 @@ Public Class PageOtherTest
 #End Region
 
 #Region "清理游戏垃圾"
+
+    Private Sub BtnClear_Click() Handles BtnClear.Click
+        RubbishClear()
+    End Sub
 
     Public Shared Sub RubbishClear()
         RunInUi(
