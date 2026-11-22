@@ -215,7 +215,7 @@ Public Module ModMinecraft
         End Set
     End Property
 
-    Public Class McInstance
+    Public Class McInstance '隐式实现 IVersionInstance（仅需 PathVersion 属性）
 
         Public Enum McInstanceState
             [Error]
@@ -561,7 +561,7 @@ Recheck:
             IniClearCache(PathVersion & "PCL\Setup.ini")
             Config.DiscardCache()
             For Each Entry In Settings.Entries.Values
-                If Entry.Source = Settings.Sources.Instance Then Entry.ValueCache.Remove(PathVersion)
+                If Entry.Source = PCL.Settings.Sources.Instance Then Entry.ValueCache.Remove(PathVersion)
             Next
         End Sub
 

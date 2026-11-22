@@ -15,6 +15,8 @@ Public Class Application
             End If
             '提升主线程优先级
             Thread.CurrentThread.Priority = ThreadPriority.Highest
+            '初始化设置项（已迁移至 PCL.Core 的存取机制，设置项注册保留在 VB 侧）
+            ModSettings.Initialize()
             '执行开发版测试
             If BuildType = BuildTypes.Debug Then
                 Try
