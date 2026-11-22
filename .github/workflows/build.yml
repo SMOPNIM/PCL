@@ -51,9 +51,27 @@ jobs:
 
 
     - name: Replace
+      env:
+        PCL_MS_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        PCL_CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
       run: |
-        (gc "Plain Craft Launcher 2\Modules\ModSecret.vb") -replace 'Public OAuthClientId As String = If(Environment.GetEnvironmentVariable("PCL_MS_CLIENT_ID"), "")', 'Public OAuthClientId As String = If(Environment.GetEnvironmentVariable("PCL_MS_CLIENT_ID"), "${{ secrets.CLIENT_ID }}")' | Out-File "Plain Craft Launcher 2\Modules\ModSecret.vb"
-        (gc "Plain Craft Launcher 2\Modules\ModSecret.vb") -replace 'Public CurseForgeAPIKey As String = If(Environment.GetEnvironmentVariable("PCL_CURSEFORGE_API_KEY"), "")', 'Public CurseForgeAPIKey As String = If(Environment.GetEnvironmentVariable("PCL_CURSEFORGE_API_KEY"), "${{ secrets.CURSEFORGE_API_KEY }}")' | Out-File "Plain Craft Launcher 2\Modules\ModSecret.vb"
+        $clientId = [string]$env:PCL_MS_CLIENT_ID
+        $curseForgeApiKey = [string]$env:PCL_CURSEFORGE_API_KEY
+        if ($clientId.Contains("`n") -or $clientId.Contains("`r") -or $curseForgeApiKey.Contains("`n") -or $curseForgeApiKey.Contains("`r")) {
+          throw "Build secrets must not contain line breaks."
+        }
+        $modSecretPath = "Plain Craft Launcher 2\Modules\ModSecret.vb"
+        $modSecret = [System.IO.File]::ReadAllText($modSecretPath)
+        $clientIdSource = 'Public OAuthClientId As String = If(Environment.GetEnvironmentVariable("PCL_MS_CLIENT_ID"), "")'
+        $curseForgeSource = 'Public CurseForgeAPIKey As String = If(Environment.GetEnvironmentVariable("PCL_CURSEFORGE_API_KEY"), "")'
+        if (-not $modSecret.Contains($clientIdSource) -or -not $modSecret.Contains($curseForgeSource)) {
+          throw "Could not find the expected build secret declarations."
+        }
+        $clientIdLiteral = $clientId.Replace('"', '""')
+        $curseForgeApiKeyLiteral = $curseForgeApiKey.Replace('"', '""')
+        $modSecret = $modSecret.Replace($clientIdSource, 'Public OAuthClientId As String = If(Environment.GetEnvironmentVariable("PCL_MS_CLIENT_ID"), "' + $clientIdLiteral + '")')
+        $modSecret = $modSecret.Replace($curseForgeSource, 'Public CurseForgeAPIKey As String = If(Environment.GetEnvironmentVariable("PCL_CURSEFORGE_API_KEY"), "' + $curseForgeApiKeyLiteral + '")')
+        [System.IO.File]::WriteAllText($modSecretPath, $modSecret, [System.Text.UTF8Encoding]::new($false))
         (gc "Plain Craft Launcher 2\Modules\Base\ModBase.vb") -replace 'Public Const CommitHash As String = ""', 'Public Const CommitHash As String = "${{ github.sha }}"' | Out-File "Plain Craft Launcher 2\Modules\Base\ModBase.vb"
         
     - name: Restore NuGet Packages
