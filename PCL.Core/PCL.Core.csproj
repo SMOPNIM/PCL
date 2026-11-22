@@ -44,6 +44,7 @@
 		<ProjectReference Include="..\MeloongCore\Shared\MeloongCore.csproj" />
 	</ItemGroup>
 
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DefineConstants>$(DefineConstants);SNAPSHOT</DefineConstants>
 	</PropertyGroup>
