@@ -1,5 +1,3 @@
-Imports PCL.MyLoading
-
 Public Class MyLoading
 
     Public Event IsErrorChanged(sender As Object, isError As Boolean)
@@ -95,13 +93,8 @@ Public Class MyLoading
 
 #Region "状态改变"
 
-    '状态枚举
-    Public Enum MyLoadingState
-        Unloaded = -1
-        Run = 0
-        [Stop] = 1
-        [Error] = 2
-    End Enum
+    '状态枚举 MyLoadingState 与 ILoadingTrigger、MyLoadingStateSimulator
+    '已迁移至 PCL.Core（C#），见 PCL.Core\Loading\LoadingTrigger.cs
 
     '用于外部改变的公开状态
     Private WithEvents _State As ILoadingTrigger
@@ -248,29 +241,5 @@ Public Class MyLoading
 
 End Class
 
-Public Interface ILoadingTrigger
-    ReadOnly Property IsLoader As Boolean
-    Property LoadingState As MyLoadingState
-    Event LoadingStateChanged(NewState As MyLoadingState, OldState As MyLoadingState)
-    Event ProgressChanged(NewProgress As Double, OldProgress As Double)
-End Interface
-
-Public Class MyLoadingStateSimulator
-    Implements ILoadingTrigger
-    Private Property _LoadingState As MyLoadingState = MyLoadingState.Unloaded
-    Public Property LoadingState As MyLoadingState Implements ILoadingTrigger.LoadingState
-        Get
-            Return _LoadingState
-        End Get
-        Set(value As MyLoadingState)
-            If _LoadingState = value Then Return
-            Dim OldState = _LoadingState
-            _LoadingState = value
-            RaiseEvent LoadingStateChanged(value, OldState)
-        End Set
-    End Property
-    Public ReadOnly Property IsLoader As Boolean = False Implements ILoadingTrigger.IsLoader
-
-    Public Event LoadingStateChanged(NewState As MyLoadingState, OldState As MyLoadingState) Implements ILoadingTrigger.LoadingStateChanged
-    Public Event ProgressChanged(NewProgress As Double, OldProgress As Double) Implements ILoadingTrigger.ProgressChanged
-End Class
+'ILoadingTrigger 与 MyLoadingStateSimulator 已迁移至 PCL.Core（C#），
+'见 PCL.Core\Loading\LoadingTrigger.cs

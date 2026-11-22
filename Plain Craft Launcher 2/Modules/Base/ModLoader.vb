@@ -96,11 +96,11 @@ Public Module ModLoader
                 Sub()
                     Select Case value
                         Case LoadState.Loading
-                            LoadingState = MyLoading.MyLoadingState.Run
+                            LoadingState = MyLoadingState.Run
                         Case LoadState.Failed
-                            LoadingState = MyLoading.MyLoadingState.Error
+                            LoadingState = MyLoadingState.Error
                         Case Else
-                            LoadingState = MyLoading.MyLoadingState.Stop
+                            LoadingState = MyLoadingState.Stop
                     End Select
                     RaiseEvent OnStateChangedUi(Me, value, OldState)
                 End Sub)
@@ -108,19 +108,19 @@ Public Module ModLoader
             End Set
         End Property
         Private _State As LoadState = LoadState.Waiting
-        Public Property LoadingState As MyLoading.MyLoadingState Implements ILoadingTrigger.LoadingState
+        Public Property LoadingState As MyLoadingState Implements ILoadingTrigger.LoadingState
             Get
                 Return _LoadingState
             End Get
-            Set(value As MyLoading.MyLoadingState)
+            Set(value As MyLoadingState)
                 If _LoadingState = value Then Return
                 Dim OldState = _LoadingState
                 _LoadingState = value
                 RaiseEvent LoadingStateChanged(value, OldState)
             End Set
         End Property
-        Private _LoadingState As MyLoading.MyLoadingState = MyLoading.MyLoadingState.Stop
-        Public Event LoadingStateChanged(NewState As MyLoading.MyLoadingState, OldState As MyLoading.MyLoadingState) Implements ILoadingTrigger.LoadingStateChanged
+        Private _LoadingState As MyLoadingState = MyLoadingState.Stop
+        Public Event LoadingStateChanged(NewState As MyLoadingState, OldState As MyLoadingState) Implements ILoadingTrigger.LoadingStateChanged
         ''' <summary>
         ''' 若加载器出错，可提供给外部参考的异常。
         ''' </summary>
