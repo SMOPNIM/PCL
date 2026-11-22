@@ -471,7 +471,7 @@ Public Module ModBase
         If RunInUi() Then
             Return Action()
         Else
-            Return Application.Current.Dispatcher.Invoke(Action)
+            Return UiDispatcher.InvokeSynchronously(Of Output)(Function() Action())
         End If
     End Function
     ''' <summary>
@@ -483,7 +483,7 @@ Public Module ModBase
         If RunInUi() Then
             Action()
         Else
-            Application.Current.Dispatcher.Invoke(Action)
+            UiDispatcher.InvokeSynchronously(Sub() Action())
         End If
     End Sub
     ''' <summary>
@@ -492,11 +492,12 @@ Public Module ModBase
     ''' </summary>
     Public Sub RunInUi(Action As Action, Optional ForceWaitUntilLoaded As Boolean = False)
         If ForceWaitUntilLoaded Then
+            '使用 Loaded 优先级，需直接调用 WPF Dispatcher（PCL.Core 抽象不覆盖此专用分支）
             Application.Current.Dispatcher.InvokeAsync(Action, Threading.DispatcherPriority.Loaded)
         ElseIf RunInUi() Then
             Action()
         Else
-            Application.Current.Dispatcher.InvokeAsync(Action)
+            UiDispatcher.InvokeAsync(Action)
         End If
     End Sub
     ''' <summary>

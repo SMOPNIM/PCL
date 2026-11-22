@@ -17,6 +17,10 @@ Public Class Application
             Thread.CurrentThread.Priority = ThreadPriority.Highest
             '初始化设置项（已迁移至 PCL.Core 的存取机制，设置项注册保留在 VB 侧）
             ModSettings.Initialize()
+            '注册 UI 线程分发实现（PCL.Core 的核心逻辑据此在不引用 WPF 的前提下调度 UI 线程；
+            '迁移到 Avalonia 时此处改为注入 Dispatcher.UIThread 的等价实现）
+            UiDispatcher.Set(Function(F As Func(Of Object)) Application.Current.Dispatcher.Invoke(F),
+                             Sub(Action) Application.Current.Dispatcher.InvokeAsync(Action))
             '执行开发版测试
             If BuildType = BuildTypes.Debug Then
                 Try
