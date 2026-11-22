@@ -80,7 +80,7 @@ Public Class PageLoginAuth
     '切换注册按钮可见性
     Private Sub ReloadRegisterButton() Handles Me.Loaded
         Dim Address As String = If(McInstanceSelected IsNot Nothing, Settings.Get(Of String)("VersionServerAuthRegister", Instance:=McInstanceSelected), Settings.Get(Of String)("CacheAuthServerRegister"))
-        BtnLink.Visibility = If(String.IsNullOrEmpty(New ValidateHttp().Validate(Address)), Visibility.Visible, Visibility.Collapsed)
+        BtnLink.Visibility = If(String.IsNullOrEmpty(New ValidateHttp().Check(Address)), Visibility.Visible, Visibility.Collapsed)
     End Sub
 
 End Class

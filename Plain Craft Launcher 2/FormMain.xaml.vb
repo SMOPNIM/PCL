@@ -959,7 +959,7 @@ Public Class FormMain
                         e.Effects = DragDropEffects.Copy
                         Dim AuthlibServer As String = StringUtils.FormUrlUnescape(Str.Substring("authlib-injector:yggdrasil-server:".Length))
                         Logger.Info($"Authlib 拖拽：{AuthlibServer}")
-                        If Not String.IsNullOrEmpty(New ValidateHttp().Validate(AuthlibServer)) Then
+                        If Not String.IsNullOrEmpty(New ValidateHttp().Check(AuthlibServer)) Then
                             Hint($"输入的 Authlib 验证服务器不符合网址格式（{AuthlibServer}）！", HintType.Red)
                             Return
                         End If

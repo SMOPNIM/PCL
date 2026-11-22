@@ -331,7 +331,6 @@
     <Compile Include="Controls\MyDropShadow.vb" />
     <Compile Include="Modules\Base\ModLoader.vb" />
     <Compile Include="Modules\Base\ModNet.vb" />
-    <Compile Include="Modules\Base\ModValidate.vb" />
     <Compile Include="Modules\Minecraft\ModDownload.vb" />
     <Compile Include="Modules\Minecraft\ModLaunch.vb" />
     <Compile Include="Modules\Minecraft\ModMinecraft.vb" />
@@ -682,6 +681,7 @@
     <Import Include="Newtonsoft.Json" />
     <Import Include="Newtonsoft.Json.Linq" />
     <Import Include="PCLCS" />
+    <Import Include="PCL.ModValidate" />
     <Import Include="System" />
     <Import Include="System.Collections.Concurrent" />
     <Import Include="System.Collections.Generic" />
@@ -925,6 +925,10 @@
       <Project>{32de4aaf-f4d6-42c5-9604-19236de96c69}</Project>
       <Name>PCLCS</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\PCL.Core\PCL.Core.csproj">
+      <Project>{9c1e7a3c-6b2d-4f8e-a5d3-2e8c4b6a1d0f}</Project>
+      <Name>PCL.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

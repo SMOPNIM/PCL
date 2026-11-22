@@ -79,7 +79,7 @@ Public Class PageLoginAuthSkin
 
     Private Sub Skin_Click(sender As Object, e As MouseButtonEventArgs) Handles Skin.Click
         Dim Address As String = If(McInstanceSelected IsNot Nothing, Settings.Get(Of String)("VersionServerAuthRegister", Instance:=McInstanceSelected), Settings.Get(Of String)("CacheAuthServerRegister"))
-        If String.IsNullOrEmpty(New ValidateHttp().Validate(Address)) Then OpenWebsite(Address.Replace("/auth/register", "/user/closet"))
+        If String.IsNullOrEmpty(New ValidateHttp().Check(Address)) Then OpenWebsite(Address.Replace("/auth/register", "/user/closet"))
     End Sub
 
 End Class

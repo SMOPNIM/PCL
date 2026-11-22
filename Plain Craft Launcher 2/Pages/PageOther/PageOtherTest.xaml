@@ -4,6 +4,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:PCL"
+    xmlns:core="clr-namespace:PCL;assembly=PCL.Core"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     PanScroll="PanBack">
     <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
@@ -40,24 +41,24 @@
                     <TextBlock Grid.Row="1" VerticalAlignment="Top" Margin="0,6,25,0" HorizontalAlignment="Left" Text="下载地址" />
                     <local:MyTextBox x:Name="TextDownloadUrl" Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="1">
                         <local:MyTextBox.ValidateRules>
-                            <local:ValidateExcept>
-                                <local:ValidateExcept.Excepts>
+                            <core:ValidateExcept>
+                                <core:ValidateExcept.Excepts>
                                     <sys:String>ftp://</sys:String>
-                                </local:ValidateExcept.Excepts>
-                            </local:ValidateExcept>
-                            <local:ValidateHttp />
+                                </core:ValidateExcept.Excepts>
+                            </core:ValidateExcept>
+                            <core:ValidateHttp />
                         </local:MyTextBox.ValidateRules>
                     </local:MyTextBox>
                     <TextBlock Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Left" Text="保存到" Margin="0,6,25,0" />
                     <local:MyTextBox x:Name="TextDownloadFolder" Grid.Column="1" Grid.Row="3">
                         <local:MyTextBox.ValidateRules>
-                            <local:ValidateFolderPath UseMinecraftCharCheck="False" />
+                            <core:ValidateFolderPath UseMinecraftCharCheck="False" />
                         </local:MyTextBox.ValidateRules>
                     </local:MyTextBox>
                     <TextBlock Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Left" Text="文件名" Margin="0,6,25,0" />
                     <local:MyTextBox x:Name="TextDownloadName" Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="5">
                         <local:MyTextBox.ValidateRules>
-                            <local:ValidateFileName UseMinecraftCharCheck="False" RequireParentFolderExists="False" />
+                            <core:ValidateFileName UseMinecraftCharCheck="False" RequireParentFolderExists="False" />
                         </local:MyTextBox.ValidateRules>
                     </local:MyTextBox>
                     <local:MyTextButton x:Name="BtnDownloadSelect" Grid.Row="3" Grid.Column="2" Text="选择" VerticalAlignment="Top" Margin="6,2,0,1" Padding="4" />
