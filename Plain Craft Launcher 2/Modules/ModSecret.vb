@@ -4,8 +4,8 @@ Friend Module ModSecret
 
     '标注 PCL 的不同分支，仅用于替换标记
     Public Const VersionBranchMain As String = "OpenSource"
-    '在开源版的注册表与常规版的注册表隔离，以防数据冲突
-    Public Const RegFolder As String = "PCLDebug"
+    '使用与官方正式版相同的注册表根目录，使已解锁主题、土豆码等数据与官方版互通
+    Public Const RegFolder As String = "PCL"
     '用于微软登录的 ClientId
     Public OAuthClientId As String = If(Environment.GetEnvironmentVariable("PCL_MS_CLIENT_ID"), "")
     'CurseForge API Key
