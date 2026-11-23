@@ -215,7 +215,8 @@ Public Module ModMinecraft
         End Set
     End Property
 
-    Public Class McInstance '隐式实现 IVersionInstance（仅需 PathVersion 属性）
+    Public Class McInstance
+        Implements IVersionInstance
 
         Public Enum McInstanceState
             [Error]
@@ -233,7 +234,7 @@ Public Module ModMinecraft
         ''' <summary>
         ''' 版本文件夹路径，以 \ 结尾。
         ''' </summary>
-        Public ReadOnly Property PathVersion As String
+        Public ReadOnly Property PathVersion As String Implements IVersionInstance.PathVersion
         ''' <summary>
         ''' 应用版本隔离后，该版本所对应的 Minecraft 根文件夹，以 \ 结尾。
         ''' </summary>
