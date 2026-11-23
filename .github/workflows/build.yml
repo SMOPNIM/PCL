@@ -3,10 +3,14 @@ on:
   push:
     paths:
       - 'Plain Craft Launcher 2/**'
+      - 'PCL.Core/**'
+      - 'PCLCS/**'
       - '.github/workflows/**'
   pull_request:
     paths:
       - 'Plain Craft Launcher 2/**'
+      - 'PCL.Core/**'
+      - 'PCLCS/**'
       - '.github/workflows/**'
   workflow_dispatch:
 
@@ -75,7 +79,9 @@ jobs:
         (gc "Plain Craft Launcher 2\Modules\Base\ModBase.vb") -replace 'Public Const CommitHash As String = ""', 'Public Const CommitHash As String = "${{ github.sha }}"' | Out-File "Plain Craft Launcher 2\Modules\Base\ModBase.vb"
         
     - name: Restore NuGet Packages
-      run: dotnet restore PCLCS\PCLCS.csproj
+      run: |
+        dotnet restore PCLCS\PCLCS.csproj
+        dotnet restore PCL.Core\PCL.Core.csproj
 
     - name: Build
       run: msbuild "Plain Craft Launcher 2\Plain Craft Launcher 2.vbproj" -p:Configuration=${{ matrix.configuration }}
