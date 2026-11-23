@@ -13,9 +13,6 @@ Public Module ModSettings
     Public Sub Initialize()
         If _Initialized Then Return
         _Initialized = True
-        '同步加密密钥与注册表键名
-        PCL.Settings.Identify = Identify
-        PCL.Settings.RegFolder = RegFolder
         '注册全部设置项
         PCL.Settings.Register(New Setting("Identify", "", Source:=PCL.Settings.Sources.Registry))
         PCL.Settings.Register(New Setting("WindowHeight", 550))
@@ -209,6 +206,11 @@ Public Module ModSettings
         PCL.Settings.Register(New Setting("VersionServerAuthRegister", "", Source:=PCL.Settings.Sources.Instance))
         PCL.Settings.Register(New Setting("VersionServerAuthName", "", Source:=PCL.Settings.Sources.Instance))
         PCL.Settings.Register(New Setting("VersionServerAuthServer", "", Source:=PCL.Settings.Sources.Instance))
+        '同步注册表键名与加密密钥。
+        '注意：读取 Identify 会触发 ModBase 模块的静态初始化（其中的 PathTemp 已改为惰性求值），
+        '因此这两行放在全部设置项注册完成之后，确保后续设置读取不会因未注册而失败。
+        PCL.Settings.RegFolder = RegFolder
+        PCL.Settings.Identify = Identify
     End Sub
 
 End Module

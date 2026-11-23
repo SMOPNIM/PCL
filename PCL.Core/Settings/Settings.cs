@@ -229,7 +229,8 @@ public class Settings {
     /// 获取某个设置项的值（指定类型）。
     /// </summary>
     public static T Get<T>(string Key, IVersionInstance? Instance = null) {
-        return (T)ConvertDynamic(Get(Key, Instance), typeof(T))!;
+        var Value = ConvertDynamic(Get(Key, Instance), typeof(T));
+        return Value is null ? default! : (T)Value;
     }
 
     /// <summary>
@@ -312,6 +313,11 @@ public class Settings {
         if (Value is null || Type is null) return null;
         if (Type.IsInstanceOfType(Value)) return Value;
         try {
+            //枚举：与 VB 的 CType 语义一致，支持按名称或数值解析字符串
+            if (Type.IsEnum) {
+                if (Value is string EnumText) return Enum.Parse(Type, EnumText, true);
+                return Enum.ToObject(Type, Value);
+            }
             return Convert.ChangeType(Value, Type, CultureInfo.InvariantCulture);
         } catch {
             return null;

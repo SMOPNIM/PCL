@@ -46,8 +46,20 @@ Public Module ModBase
     Public PathImage As String = "pack://application:,,,/Plain Craft Launcher 2;component/Images/"
     ''' <summary>
     ''' 程序的缓存文件夹路径，以 \ 结尾。
+    ''' 惰性求值：首次访问时才读取设置项，避免在设置项注册完成之前触发（模块可能被提前初始化）。
     ''' </summary>
-    Public PathTemp As String = PathUtils.AddSlashSuffix(If(Settings.Get(Of String)("SystemSystemCache") = "", Path.GetTempPath() & "PCL\", Settings.Get(Of String)("SystemSystemCache")).Replace("/", "\"))
+    Public Property PathTemp As String
+        Get
+            If _PathTemp Is Nothing Then
+                _PathTemp = PathUtils.AddSlashSuffix(If(Settings.Get(Of String)("SystemSystemCache") = "", Path.GetTempPath() & "PCL\", Settings.Get(Of String)("SystemSystemCache")).Replace("/", "\"))
+            End If
+            Return _PathTemp
+        End Get
+        Set(value As String)
+            _PathTemp = value
+        End Set
+    End Property
+    Private _PathTemp As String = Nothing
     ''' <summary>
     ''' 当前程序的语言。
     ''' </summary>

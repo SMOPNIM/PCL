@@ -9,14 +9,15 @@ Public Class Application
             '核心初始化
             MeloongCore.Main.Init("PCL")
             MeloongCore.Wpf.Main.Init()
+            '初始化设置项（已迁移至 PCL.Core 的存取机制，设置项注册保留在 VB 侧）。
+            '必须放在任何 ModBase 成员访问之前：ModBase 的模块初始化会读取设置项（如 PathTemp 读取 SystemSystemCache）。
+            ModSettings.Initialize()
             If Not (e.Args.Contains("--update") OrElse e.Args.Contains("--gpu") OrElse e.Args.Contains("--memory")) Then '若是通过命令行调用，则不检查单例、不轮换日志（#9137）
                 WaitingMutex(e)
                 Logger.Instance = New PclLogger With {.logFolder = Paths.BaseThenName, .MinLevel = If(ModeDebug, LogLevel.Trace, LogLevel.Info)}
             End If
             '提升主线程优先级
             Thread.CurrentThread.Priority = ThreadPriority.Highest
-            '初始化设置项（已迁移至 PCL.Core 的存取机制，设置项注册保留在 VB 侧）
-            ModSettings.Initialize()
             '注册 UI 线程分发实现（PCL.Core 的核心逻辑据此在不引用 WPF 的前提下调度 UI 线程；
             '迁移到 Avalonia 时此处改为注入 Dispatcher.UIThread 的等价实现）
             UiDispatcher.Set(Function(F As Func(Of Object)) Application.Current.Dispatcher.Invoke(F),
